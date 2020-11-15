@@ -1,19 +1,21 @@
 auth:
   enable: true
-  jwt_key: himura
+  jwt_key: 123456
 http:
   addr: localhost:27183
   access_log: true
-  ac_log_path: ./log/blog.server.access.log
+  ac_log_path: log/blog.server.access.log
 log:
-  level: DEBUG
-  path: ./log/blog.server.log
+  level: INFO
+  path: log/blog.server.log
 mysql:
-  log_mode: true
+  log_mode: false
   max_idle_conns: 10
-  source: zihan:123@tcp(localhost:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local
+  source: root:123456@tcp(localhost:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local
 storage:
   vue_press_blog_path: vueVisitor
 website:
-  description: 我如朝露降人间，和风樱花随春谢。
-  title: 真田信之
+  description:
+  title: blog
+script:
+  visitor_build_script: vuepress-build.sh

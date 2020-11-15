@@ -9,7 +9,3 @@ func TestEditConfigJS(t *testing.T) {
 	key, value := "title", "绯村真之"
 	t.Log(EditConfigJS(file, key, value))
 }
-
-func TestYarnBuild(t *testing.T) {
-	t.Log(YarnBuild())
-}
