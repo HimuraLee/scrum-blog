@@ -644,11 +644,13 @@ func (svc *BackendService) PostAddOrEdit(ctx echo.Context) error {
 			err = ctx.JSON(BadRequest("未获取到文章信息"))
 			return err
 		}
-		c, err := model.CateByID(sql, ipt.Post.CateID)
-		if err != nil {
-			return ctx.JSON(BadRequest("获取文章分类信息失败,请重试", err))
+		if ipt.Post.CateID != 0 {
+			c, err := model.CateByID(sql, ipt.Post.CateID)
+			if err != nil {
+				return ctx.JSON(BadRequest("获取文章分类信息失败,请重试", err))
+			}
+			ipt.Post.CateName = c.Name
 		}
-		ipt.Post.CateName = c.Name
 		err = model.PostEdit(sql, &ipt.Post)
 		if err != nil {
 			return ctx.JSON(BadRequest("文章修改失败,请重试", err))
@@ -700,11 +702,13 @@ func (svc *BackendService) PostAddOrEdit(ctx echo.Context) error {
 			FrontMatter: &md5view.FrontMatter {
 				Title:      ipt.Post.Title,
 				Tags:       tagsName,
-				Categories: []string{ipt.Post.CateName},
 				Publish:    ipt.Post.Status == 1,
 				Date:       ipt.Post.CreatedAt.Format(md5view.LongSplitTime),
 			},
 			Doc:         ipt.Post.MarkdownContent,
+		}
+		if ipt.Post.CateID != 0 {
+			vpd.FrontMatter.Categories = []string{ipt.Post.CateName}
 		}
 		if ipt.Post.Passwd != "" {
 			h := md5.New()
@@ -801,7 +805,7 @@ func (svc *BackendService) UserLogin(ctx echo.Context) error {
 	}
 	auth := jwt.JwtAuth{
 		ID:    user.ID,
-		ExpAt: time.Now().Add(time.Hour * 2).Unix(),
+		ExpAt: time.Now().Add(time.Hour * 6).Unix(),
 	}
 	return ctx.JSON(Suc("登录成功", auth.Encode(svc.cfg.Auth.JwtKey)))
 }
