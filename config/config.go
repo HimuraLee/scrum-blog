@@ -30,6 +30,7 @@ type Config struct {
 	Log struct {
 		Level string `mapstructure:"level"`
 		Path  string `mapstructure:"path"`
+		VuePressLogPath string `mapstructure:"vue_press_log_path"`
 	} `mapstructure:"log"`
 
 	Auth struct {

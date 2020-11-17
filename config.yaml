@@ -8,6 +8,7 @@ http:
 log:
   level: INFO
   path: log/blog.server.log
+  vue_press_log_path: log/vuepress.build.log
 mysql:
   log_mode: false
   max_idle_conns: 10

@@ -206,7 +206,7 @@ func (svc *BackendService) CateDrop(ctx echo.Context) error {
 				return ctx.JSON(BadRequest("转移分类下文章失败,请重试", err))
 			}
 		}
-		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript)
+		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 	}
 	tx.Commit()
 	return ctx.JSON(Suc("分类删除成功"))
@@ -278,7 +278,7 @@ func (svc *BackendService) CateEdit(ctx echo.Context) error {
 				return ctx.JSON(BadRequest("修改文章信息失败,请重试", err))
 			}
 		}
-		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript)
+		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 	}
 	tx.Commit()
 	return ctx.JSON(Suc("分类修改成功"))
@@ -315,7 +315,7 @@ func (svc *BackendService) PostDrop(ctx echo.Context) error {
 		return ctx.JSON(BadRequest("删除文章标签关系失败,请重试", err))
 	}
 	os.Remove(filepath.Join(svc.cfg.Storage.VuePressBlogPath, "docs/views", p[0].CreatedAt.Format(md5view.LongSeqTime) + ".md"))
-	go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript)
+	go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 	tx.Commit()
 	return ctx.JSON(Suc("删除成功"))
 }
@@ -380,7 +380,7 @@ func (svc *BackendService) TagEdit(ctx echo.Context) error {
 				return ctx.JSON(BadRequest("修改文章信息失败", err))
 			}
 		}
-		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript)
+		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 	}
 	tx.Commit()
 	return ctx.JSON(Suc("标签修改成功"))
@@ -427,7 +427,7 @@ func (svc *BackendService) TagDrop(ctx echo.Context) error {
 				return ctx.JSON(BadRequest("修改文章信息失败", err))
 			}
 		}
-		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript)
+		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 	}
 	tx.Commit()
 	return ctx.JSON(Suc("标签删除成功"))
@@ -603,7 +603,7 @@ func (svc *BackendService) InfoEdit(ctx echo.Context) error {
 		if err != nil {
 			return ctx.JSON(BadRequest("博客信息修改失败", err))
 		}
-		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript)
+		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 	}
 	return ctx.JSON(Suc("博客信息修改成功"))
 }
@@ -720,7 +720,7 @@ func (svc *BackendService) PostAddOrEdit(ctx echo.Context) error {
 		if err != nil {
 			return ctx.JSON(BadRequest("写入Markdown文件失败", err))
 		}
-		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript)
+		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 		tx.Commit()
 		return ctx.JSON(Suc("文章修改成功"))
 	}
@@ -767,7 +767,7 @@ func (svc *BackendService) PostAddOrEdit(ctx echo.Context) error {
 	if err != nil {
 		return ctx.JSON(BadRequest("写入Markdown文件失败", err))
 	}
-	go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript)
+	go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 	tx.Commit()
 	return ctx.JSON(Suc("文章添加成功"))
 }

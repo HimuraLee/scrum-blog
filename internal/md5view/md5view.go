@@ -4,12 +4,17 @@ import (
 	"blog/internal/process"
 	"errors"
 	"fmt"
+	"github.com/labstack/gommon/log"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -18,6 +23,9 @@ const (
 	LongSeqTime string = "20060102150405"
 	LongSplitTime string = "2006-01-02 15:04:05"
 )
+
+var vLog *logrus.Logger
+var o sync.Once
 
 func EditConfigJS(file string, key, value string) error {
 	raw, err := ioutil.ReadFile(file)
@@ -113,14 +121,37 @@ func (vpd *VuePressDoc) String() string {
 	return fmt.Sprintf("---\n%s---\n%s", string(fm), vpd.Doc)
 }
 
-func YarnBuild(path string) {
+func YarnBuild(path, logPath string) {
+	o.Do(func () {
+		vLog = &logrus.Logger{
+			Formatter: new(logrus.JSONFormatter),
+			Hooks:     make(logrus.LevelHooks),
+			Level:     logrus.InfoLevel,
+		}
+		os.MkdirAll(filepath.Dir(logPath), 0777)
+		// 设置 rotatelogs
+		logWriter, err := rotatelogs.New(
+			// 分割后的文件名称
+			logPath + ".%Y%m%d.log",
+			// 生成软链，指向最新日志文件
+			rotatelogs.WithLinkName(logPath),
+			// 设置最大保存时间(7天)
+			rotatelogs.WithMaxAge(7*24*time.Hour),
+			// 设置日志切割时间间隔(1天)
+			rotatelogs.WithRotationTime(24*time.Hour),
+		)
+		if err != nil {
+			log.Errorf("failed to set rotatelogs, %s", err)
+		}
+		vLog.SetOutput(logWriter)
+	})
 	p := process.NewProcess(exec.Command("bash", path))
 	err := p.Start()
 	if err != nil {
 		return
 	}
 	err = p.Wait()
-	logrus.Info("rebuild vuePress result", "cmd", p.Cmd(), "out", p.Stdout(), "err", p.Stderr())
+	vLog.Infof("rebuild vuePress result\ncmd: %s\nout:%s\nerr:%s", p.Cmd(), p.Stdout(), p.Stderr())
 	if err != nil {
 		return
 	}
