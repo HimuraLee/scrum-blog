@@ -32,11 +32,11 @@ func EditConfigJS(file string, key, value string) error {
 }
 
 type FrontMatter struct {
-	Title string `yaml:"title"`
+	Title string `yaml:"title,omitempty"`
 	Tags []string `yaml:"tags,omitempty"`
-	Categories []string `yaml:"categories"`
-	Publish bool `yaml:"publish"`
-	Date string `yaml:"date"`
+	Categories []string `yaml:"categories,omitempty"`
+	Publish bool `yaml:"publish,omitempty"`
+	Date string `yaml:"date,omitempty"`
 	Passwd []string `yaml:"keys,omitempty"`
 }
 
@@ -113,8 +113,8 @@ func (vpd *VuePressDoc) String() string {
 	return fmt.Sprintf("---\n%s---\n%s", string(fm), vpd.Doc)
 }
 
-func YarnBuild() {
-	p := process.NewProcess(exec.Command("bash", "./script/vuepress-build.sh"))
+func YarnBuild(path string) {
+	p := process.NewProcess(exec.Command("bash", path))
 	err := p.Start()
 	if err != nil {
 		return

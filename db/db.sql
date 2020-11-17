@@ -32,6 +32,9 @@ CREATE TABLE `post` (
   KEY `create_time` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `post` VALUES ('1', '0', '', '0', '关于我', '', 'about-me', '::: tip 介绍\n暫時沒有個人介紹!\n:::', CURRENT_TIME, CURRENT_TIME);
+INSERT INTO `post` VALUES ('2', '0', '', '0', '留言板', '', 'message-board', '::: tip\n欢迎大家在此留下你的建议和意见。\n:::', CURRENT_TIME, CURRENT_TIME);
+
 DROP TABLE IF EXISTS `post_tag`;
 CREATE TABLE `post_tag` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

@@ -4,5 +4,8 @@ build/
 
 .DS_Store
 
-vueAdmin/
-vueVisitor/
+scrum-blog-admin/
+scrum-blog-visitor/
+
+package-lock.json
+node_modules/

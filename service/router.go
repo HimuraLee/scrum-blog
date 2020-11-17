@@ -7,6 +7,7 @@ import (
 func (svc *BackendService) ApiAdminRouter() {
 	svc.echo.Use(NewRecoverMiddleware(), NewAccessLogMiddleware(svc.cfg))
 	svc.echo.Use(middleware.CORSWithConfig(crosConfig))
+	svc.echo.Static("/.well-known", ".")
 	v1 := svc.echo.Group(`/api/v1`)
 
 	v1.POST(`/login`, svc.UserLogin)            // 登陆

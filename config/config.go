@@ -36,6 +36,10 @@ type Config struct {
 		Enable  bool   `mapstructure:"enable"`
 		JwtKey  string `mapstructure:"jwt_key"`
 	} `mapstructure:"auth"`
+
+	Script struct{
+		VisitorBuildScript string `mapstructure:"visitor_build_script"`
+	} `mapstructure:"script"`
 }
 
 var c *Config
