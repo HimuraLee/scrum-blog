@@ -729,11 +729,14 @@ func (svc *BackendService) PostAddOrEdit(ctx echo.Context) error {
 		return ctx.JSON(BadRequest("获取文章分类信息失败,请重试", err))
 	}
 	ipt.Post.CateName = c.Name
-	ipt.Post.CreatedAt = time.Now()
-	ipt.Post.Filename = ipt.Post.CreatedAt.Format(md5view.LongSeqTime)
 	err = model.PostAdd(sql, &ipt.Post)
 	if err != nil {
 		return ctx.JSON(BadRequest("文章添加失败,请重试", err))
+	}
+	ipt.Post.Filename = ipt.Post.CreatedAt.Format(md5view.LongSeqTime)
+	err = model.PostEdit(sql, &ipt.Post)
+	if err != nil {
+		return ctx.JSON(BadRequest("文章更新失败,请重试", err))
 	}
 	err = model.PostTagAdd(sql, ipt.Post.ID, ipt.Tags)
 	if err != nil {
