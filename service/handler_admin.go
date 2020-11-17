@@ -715,7 +715,7 @@ func (svc *BackendService) PostAddOrEdit(ctx echo.Context) error {
 			h.Write([]byte(ipt.Post.Passwd))
 			vpd.FrontMatter.Passwd = []string{hex.EncodeToString(h.Sum(nil))}
 		}
-		path := filepath.Join(svc.cfg.Storage.VuePressBlogPath, "docs/views", ipt.Post.CreatedAt.Format(md5view.LongSeqTime) + ".md")
+		path := filepath.Join(svc.cfg.Storage.VuePressBlogPath, "docs/views", ipt.Post.Filename + ".md")
 		err = ioutil.WriteFile(path, []byte(vpd.String()), 0777)
 		if err != nil {
 			return ctx.JSON(BadRequest("写入Markdown文件失败", err))
