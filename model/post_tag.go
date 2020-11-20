@@ -2,7 +2,6 @@ package model
 
 import (
 	"blog/db"
-	"fmt"
 )
 
 //PostTag 文章标签
@@ -29,16 +28,13 @@ func PostTagAdd(sql *db.SqlClient, pid int, tid []int) error {
 	if len(tid) == 0 {
 		return nil
 	}
-	raw := fmt.Sprintf("INSERT INTO %s(post_id, tag_id) VALUES", db.PostTagTable)
 	for i := range tid {
-		raw = fmt.Sprintf("%s (%d, %d)", raw, pid, tid[i])
-		if i < len(tid) - 1 {
-			raw += fmt.Sprintf("%s,\n", raw)
-		} else {
-			raw += ";"
-		}
+		sql.Create(&PostTag{
+			PostID: pid,
+			TagID:  tid[i],
+		})
 	}
-	return sql.Exec(raw).Error
+	return nil
 }
 
 func PostTagDrop(sql *db.SqlClient, pid int, tid []int) error {

@@ -43,7 +43,7 @@ type FrontMatter struct {
 	Title string `yaml:"title,omitempty"`
 	Tags []string `yaml:"tags,omitempty"`
 	Categories []string `yaml:"categories,omitempty"`
-	Publish bool `yaml:"publish,omitempty"`
+	Publish bool `yaml:"publish"`
 	Date string `yaml:"date,omitempty"`
 	Passwd []string `yaml:"keys,omitempty"`
 }
