@@ -15,6 +15,7 @@ mysql:
   source: root:123456@tcp(localhost:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local
 storage:
   vue_press_blog_path: vueVisitor
+  project_path: /root/himura/
 website:
   description:
   title: blog

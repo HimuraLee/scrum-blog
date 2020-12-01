@@ -25,6 +25,7 @@ type Config struct {
 
 	Storage struct {
 		VuePressBlogPath string `mapstructure:"vue_press_blog_path"`
+		ProjectPath string `mapstructure:"project_path"`
 	} `mapstructure:"storage"`
 
 	Log struct {
