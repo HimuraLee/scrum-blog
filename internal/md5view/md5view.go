@@ -60,7 +60,7 @@ func LoadVuePressDoc(path string) (*VuePressDoc, error) {
 	}
 	lo := strings.Index(string(raw), "---\n")
 	ro := strings.LastIndex(string(raw), "---")
-	if ro >= lo {
+	if ro <= lo {
 		return nil, errors.New("illegal format")
 	}
 	fm := new(FrontMatter)
