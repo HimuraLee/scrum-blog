@@ -277,6 +277,11 @@ func (svc *BackendService) CateEdit(ctx echo.Context) error {
 			if err != nil {
 				return ctx.JSON(BadRequest("修改文章信息失败,请重试", err))
 			}
+			p[i].CateName = c.Name
+			err = model.PostEdit(sql, p[i])
+			if err != nil {
+				return ctx.JSON(BadRequest("修改文章信息失败,请重试", err))
+			}
 		}
 		go md5view.YarnBuild(svc.cfg.Script.VisitorBuildScript, svc.cfg.Log.VuePressLogPath)
 	}

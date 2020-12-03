@@ -64,18 +64,19 @@ func LoadVuePressDoc(path string) (*VuePressDoc, error) {
 		return nil, errors.New("illegal format")
 	}
 	fm := new(FrontMatter)
-	err = yaml.Unmarshal(raw[lo+4:ro], fm)
+	err = yaml.Unmarshal(raw[lo+3:ro], fm)
 	if err != nil {
 		return nil, err
 	}
 	return &VuePressDoc{
 		FrontMatter: fm,
-		Doc:         string(raw[ro+4:]),
+		Doc:         string(raw[ro+3:]),
 	}, nil
 }
 
 func EditVuePressDoc(path, key string, value ...interface{}) error {
 	vpd, err := LoadVuePressDoc(path)
+	logrus.Infof("Load result: %v, err: %v", vpd, err)
 	if err != nil {
 		return err
 	}

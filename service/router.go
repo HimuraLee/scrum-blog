@@ -3,7 +3,6 @@ package service
 import (
 	"github.com/labstack/echo/v4/middleware"
 )
-
 func (svc *BackendService) ApiAdminRouter() {
 	svc.echo.Use(NewRecoverMiddleware(), NewAccessLogMiddleware(svc.cfg))
 	svc.echo.Use(middleware.CORSWithConfig(crosConfig))
@@ -24,7 +23,6 @@ func (svc *BackendService) ApiAdminRouter() {
 	v1.GET(`/auth`, svc.UserAuth)                // 获取当前登陆信息
 	v1.PATCH(`/user`, svc.UserEdit) // 修改自身信息
 	v1.PATCH(`/user/passwd`, svc.UserPass)          // 修改密码
-
 	v1.DELETE(`/cate/:id`, svc.CateDrop)   // 删除分类
 	v1.POST(`/cate`, svc.CateAdd)        // 添加分类
 	v1.PATCH(`/cate`, svc.CateEdit)      // 编辑分类
