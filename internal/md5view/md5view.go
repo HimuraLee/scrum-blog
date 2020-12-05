@@ -59,7 +59,8 @@ func LoadVuePressDoc(path string) (*VuePressDoc, error) {
 		return nil, err
 	}
 	lo := strings.Index(string(raw), "---\n")
-	ro := strings.LastIndex(string(raw), "---")
+	ro := strings.Index(string(raw[lo+3:]), "---")
+	ro += 3
 	if ro <= lo {
 		return nil, errors.New("illegal format")
 	}
@@ -76,7 +77,6 @@ func LoadVuePressDoc(path string) (*VuePressDoc, error) {
 
 func EditVuePressDoc(path, key string, value ...interface{}) error {
 	vpd, err := LoadVuePressDoc(path)
-	logrus.Infof("Load result: %v, err: %v", vpd, err)
 	if err != nil {
 		return err
 	}
@@ -114,6 +114,7 @@ func EditVuePressDoc(path, key string, value ...interface{}) error {
 	case "date":
 		vpd.FrontMatter.Date = value[0].(time.Time).Format(LongSplitTime)
 	}
+	ioutil.WriteFile(path, []byte(vpd.String()), 0777)
 	return nil
 }
 
